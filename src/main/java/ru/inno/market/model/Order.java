@@ -1,5 +1,7 @@
 package ru.inno.market.model;
 
+import ru.inno.market.core.Catalog;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -20,9 +22,7 @@ public class Order {
         discountApplied = false;
     }
 
-    public Map<Item, Integer> getItems() {
-        return cart;
-    }
+    public Map<Item, Integer> getItems() { return cart; }
 
     public int getId() {
         return id;
@@ -34,7 +34,10 @@ public class Order {
         totalPrice += item.getPrice();
     }
 
-    public void applyDiscount(double discount) {
+    public void applyDiscount(double discount) { //добавила условие на ограничение вводимой скидки
+        if (discount <= 0 || discount >= 1) {
+            throw new IllegalArgumentException("Скидка должна быть коэффициентом (0.0;1.0): " + discount);
+        }
         if (!discountApplied) {
             totalPrice *= (1- discount);
             discountApplied = true;
